@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 
 function App() {
   const [file, setFile] = useState(null);
+  const [pdf, setPdf] = useState(null);
 
   const upload = (e) => {
     setFile(e.target.files[0]);
@@ -19,8 +19,20 @@ function App() {
           'Content-Type': 'multipart/form-data',
         },
       })
-      .then((res) => console.log('Success'))
+      .then(() => console.log('Success'))
       .catch((err) => console.error('Error', err));
+  };
+
+  const getPdf = () => {
+    axios
+      .get('http://localhost:8080/api/v1/sample/Vivek-CV.pdf', {
+        //  important!
+        responseType: 'blob',
+      })
+      .then((response) => {
+        const pdfFile = new Blob([response.data], { type: 'application/pdf' });
+        setPdf(URL.createObjectURL(pdfFile));
+      });
   };
 
   return (
@@ -29,6 +41,10 @@ function App() {
 
       <hr />
       <button onClick={submit}>Submit</button>
+
+      <hr />
+      <button onClick={getPdf}>Get PDF</button>
+      <object data={pdf} width='500' height='400'></object>
     </div>
   );
 }

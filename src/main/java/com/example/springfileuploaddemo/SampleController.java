@@ -26,7 +26,7 @@ public class SampleController {
         try {
             InputStreamResource resource = new InputStreamResource(new FileInputStream("uploads/" + fileName));
             return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG)
+                    .contentType(MediaType.APPLICATION_PDF)
                     .body(resource);
         } catch (FileNotFoundException ex) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
